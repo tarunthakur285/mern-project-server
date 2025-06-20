@@ -1,24 +1,26 @@
-const express = require('express'); // Include the express module
-const cookieParser = require('cookie-parser'); // Include the cookie-parser module
-const cors = require('cors'); // Include the cors module
-const authRoutes = require('./src/routes/authRoutes'); // Include your auth routes
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const authRoutes = require('./src/routes/authRoutes');
 
-const app = express(); // Instantiate express app
+const app = express();
 
-// Middleware to parse JSON and cookies
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// CORS configuration
+// CORS config
 const corsOptions = {
-  origin: 'http://localhost:5001',
+  origin: 'http://localhost:3000', // Frontend port (usually 3000)
   credentials: true
 };
-
 app.use(cors(corsOptions));
 
-// Use the auth routes
+// Routes
 app.use('/auth', authRoutes);
-
-// Set up the server to listen
+  
+// Start server
 const PORT = 5001;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
