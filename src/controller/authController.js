@@ -13,7 +13,7 @@ const authController = {
             };
 
             const token = jwt.sign(user, authController.secret, { expiresIn: "1h" });
-            responce.cookie("token", token, {
+            response.cookie("jwtToken", token, { 
                 httpOnly: true,
                 secure: true,
                 domain: "localhost",
@@ -24,23 +24,25 @@ const authController = {
             response.status(401).json({ message: "invalid credentials" });
         }
     },
+
     logout: (request, response) => {
         response.clearCookie('jwtToken');
         response.json({ message: "User logged out successfully" });
     },
+
     isUserLoggedIn: (request, response) => {
         const token = request.cookies.jwtToken;
         if (!token) {
-            return response.status(401).json({ message: "Unauthorized acess" });
+            return response.status(401).json({ message: "Unauthorized access" });
         }
-        jwt.verify(token, secret, (error, user) => {
+        jwt.verify(token, authController.secret, (error, user) => {
             if (error) {
                 return response.status(401).json({ message: "Unauthorized access" });
-            }
-            else {
+            } else {
                 response.json({ message: "User is logged in", user: user });
             }
         });
     },
 };
+
 module.exports = authController;

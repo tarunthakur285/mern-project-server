@@ -4,5 +4,5 @@ const router = express.Router();
 
 router.post('/login', authController.login);
 router.post('/logout', authController.logout);
-router.get('/isUserLoggedIn', authController.isUserLoggedIn);
+router.post('/is-user-logged-in', authController.isUserLoggedIn);
 module.exports = router;
