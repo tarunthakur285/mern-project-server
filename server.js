@@ -1,7 +1,13 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const authRoutes = require('./src/routes/authRoutes');
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch((error) => console.log(error));
 
 const app = express();
 
@@ -11,9 +17,10 @@ app.use(cookieParser());
 
 // CORS config
 const corsOptions = {
-  origin: 'http://localhost:3000', // Frontend port (usually 3000)
+  origin: process.env.CLIENT_ENDPOINT, // Frontend port (usually 3000)
   credentials: true
 };
+console.log('CORS origin:', process.env.CLIENT_ENDPOINT);
 app.use(cors(corsOptions));
 
 // Routes
